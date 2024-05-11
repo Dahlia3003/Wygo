@@ -5,6 +5,7 @@ import com.rocket.wygo.requests.ReportPostRequest;
 import com.rocket.wygo.requests.ReportUserRequest;
 import com.rocket.wygo.response.MessageResponse;
 import com.rocket.wygo.response.ReportPostResponse;
+import com.rocket.wygo.response.ReportUserResponse;
 import com.rocket.wygo.services.ReportPostService;
 import com.rocket.wygo.services.ReportUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,6 +49,15 @@ public class ReportController {
             return ResponseEntity.ok("Báo cáo thành công");
         } catch (UserAlreadyExistsException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+    @PostMapping("/user/all")
+    public  ResponseEntity<List<ReportUserResponse>> getAllReportUsers()
+    {
+        try {
+            return ResponseEntity.ok().body(reportUserService.getAllReportUsers());
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(null);
         }
     }
 
