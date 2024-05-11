@@ -37,6 +37,9 @@ public class ReportPostService {
         {
             throw new RuntimeException("Gửi báo cáo thất bại, không tìm thấy bài viết!");
         }
+        if (reportType.trim().isBlank()){
+            throw new RuntimeException("Không được để trống lý do!");
+        }
         ReportPost reportPost = new ReportPost(userReport, post, reportType);
         reportPostRepository.save(reportPost);
     }

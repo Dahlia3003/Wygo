@@ -2,6 +2,8 @@ package com.rocket.wygo.models;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Table(name = "report_post")
 public class ReportPost {
@@ -19,6 +21,11 @@ public class ReportPost {
 
     @Column(name = "report_type", nullable = false)
     private String reportType;
+    @Column(name = "timestamp", nullable = false)
+    private LocalDateTime timestamp;
+
+    @Column(name = "resolved")
+    private boolean resolved;
     public ReportPost() {
     }
 
@@ -26,6 +33,8 @@ public class ReportPost {
         this.author = author;
         this.reportObject = reportObject;
         this.reportType = reportType;
+        this.timestamp = LocalDateTime.now();
+        this.resolved = false;
     }
 
     public Long getId() {
