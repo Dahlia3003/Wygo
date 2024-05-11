@@ -5,6 +5,7 @@ import java.util.Date;
 public class UserResponse {
     private Integer id;
     private String username;
+    private String name;
     private Date birth;
     private String hometown;
     private String avatar;
@@ -37,6 +38,14 @@ public class UserResponse {
     private int bedisfavoredListSize;
     private int notificationListSize;
     private Boolean available;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public Integer getId() {
         return id;
