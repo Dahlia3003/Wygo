@@ -62,7 +62,15 @@ public class UserController {
             return ResponseEntity.notFound().build();
         }
     }
-
+    @GetMapping("/user/{user}")
+    public ResponseEntity<User> getUserByEmailOrUsername(@PathVariable String user) {
+        try {
+            User userRes = userService.checkUserExisted(user);
+            return ResponseEntity.ok(userRes);
+        } catch (UserNotFoundException e) {
+            return ResponseEntity.badRequest().body(null);
+        }
+    }
 
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest)

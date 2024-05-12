@@ -158,6 +158,23 @@ public class UserService {
     public User getUserById(Integer id) {
         return userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("User not found"));
     }
+    @Transactional
+    public User checkUserExisted(String username) {
+        User user = new User();
+        if (username.contains("@"))
+        {
+            user = userRepository.findByEmail(username);
+        }
+        else
+        {
+            user = userRepository.findByUsername(username);
+        }
+        if (user == null)
+        {
+            throw new LoginFailedException("Không tìm thấy người dùng!");
+        }
+        return user;
+    }
 
     @Transactional
     public void createUser(UserDTO userDTO) {
