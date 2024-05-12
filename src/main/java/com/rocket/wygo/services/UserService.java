@@ -114,14 +114,22 @@ public class UserService {
     public void upvoteUser(String target, String author) throws Exception {
         User targetUser = userRepository.findByUsername(target);
         User authorUser = userRepository.findByUsername(author);
+
         if (targetUser == null) {
             throw new Exception("Người dùng " + target + " không tồn tại");
         }
         if (authorUser == null) {
             throw new Exception("Người dùng " + author + " không tồn tại");
         }
-        targetUser.getFavorList().add(authorUser);
-        authorUser.getBefavoredList().add(targetUser);
+
+        if (targetUser.getBefavoredList().contains(authorUser)) {
+            targetUser.getBefavoredList().remove(authorUser);
+            authorUser.getFavorList().remove(targetUser);
+        }
+        else {
+            targetUser.getBefavoredList().add(authorUser);
+            authorUser.getFavorList().add(targetUser);
+        }
         userRepository.save(targetUser);
         userRepository.save(authorUser);
     }
@@ -136,11 +144,39 @@ public class UserService {
         if (authorUser == null) {
             throw new Exception("Người dùng " + author + " không tồn tại");
         }
-        targetUser.getDisfavorList().add(authorUser);
-        authorUser.getBedisfavoredList().add(targetUser);
+
+        if (targetUser.getBedisfavoredList().contains(authorUser)) {
+            targetUser.getBedisfavoredList().remove(authorUser);
+            authorUser.getDisfavorList().remove(targetUser);
+        }
+        else {
+            targetUser.getBedisfavoredList().add(authorUser);
+            authorUser.getDisfavorList().add(targetUser);
+        }
         userRepository.save(targetUser);
         userRepository.save(authorUser);
     }
+
+    @Transactional
+    public boolean hasUpvoted(String fromUser, String toUser) {
+        User fromUserEntity = userRepository.findByUsername(fromUser);
+        User toUserEntity = userRepository.findByUsername(toUser);
+        if (fromUserEntity == null || toUserEntity == null) {
+            throw new RuntimeException("User not found");
+        }
+        return toUserEntity.getBefavoredList().contains(fromUserEntity);
+    }
+
+    @Transactional
+    public boolean hasDownvoted(String fromUser, String toUser) {
+        User fromUserEntity = userRepository.findByUsername(fromUser);
+        User toUserEntity = userRepository.findByUsername(toUser);
+        if (fromUserEntity == null || toUserEntity == null) {
+            throw new RuntimeException("User not found");
+        }
+        return toUserEntity.getBedisfavoredList().contains(fromUserEntity);
+    }
+
     @Transactional
     public User enableUser(Integer id) {
         User user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));

@@ -39,7 +39,7 @@ public class PostService {
         postResponse.setPostTime(post.getPostTime());
 
         UserResponse userRes = new UserResponse(
-                                post.getAuthor().getId(), post.getAuthor().getUsername() ,post.getAuthor().getBirth(), post.getAuthor().getHometown(),
+                                post.getAuthor().getId(), post.getAuthor().getUsername(),post.getAuthor().getName() ,post.getAuthor().getBirth(), post.getAuthor().getHometown(),
                                 post.getAuthor().getAvatar(), post.getAuthor().getGender(), post.getAuthor().getBio(),
                                 post.getAuthor().getFavorList().size(), post.getAuthor().getDisfavorList().size(),
                                 post.getAuthor().getBefavoredList().size(), post.getAuthor().getBedisfavoredList().size(),

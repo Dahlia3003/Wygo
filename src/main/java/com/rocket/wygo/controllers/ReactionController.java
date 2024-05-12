@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/reactions")
 @CrossOrigin
@@ -24,5 +26,11 @@ public class ReactionController {
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
+    }
+
+    @GetMapping("{postId}/getauthors")
+    public ResponseEntity<List<String>> getReactionAuthorsByPostId(@PathVariable int postId) {
+        List<String> reactionAuthors = reactionService.getReactionAuthorsByPostId(postId);
+        return ResponseEntity.ok(reactionAuthors);
     }
 }

@@ -27,7 +27,7 @@ public class ViewPersonalPageService {
             throw new Exception("Người dùng " + username + " không tồn tại");
         }
         UserResponse userRes = new UserResponse(
-                                user.getId(), user.getUsername() ,user.getBirth(), user.getHometown(),
+                                user.getId(), user.getUsername(), user.getName() ,user.getBirth(), user.getHometown(),
                                 user.getAvatar(), user.getGender(), user.getBio(),
                                 user.getFavorList().size(), user.getDisfavorList().size(),
                                 user.getBefavoredList().size(), user.getBedisfavoredList().size(),
@@ -37,7 +37,7 @@ public class ViewPersonalPageService {
             PostResponse postDTO = new PostResponse(
                                         post.getId(), userRes, post.getPostTime(),
                                         post.getContent(), post.getLocation(), post.getMedia(),
-                                        post.getCommentList().size(), post.getReactions().size(), post.getAvailable() );
+                                        post.getReactions().size(),post.getCommentList().size(), post.getAvailable() );
             postDTOList.add(postDTO);
         }
         UserPostResponse userPostDTO = new UserPostResponse();

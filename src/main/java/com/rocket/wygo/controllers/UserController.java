@@ -92,7 +92,7 @@ public class UserController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
-    @PostMapping("/up-vote")
+    @PostMapping("/upvote")
     public ResponseEntity<String> upvoteRequest(@RequestBody UpDownVoteRequest upVoteRequest) {
         try {
             userService.upvoteUser(upVoteRequest.getTargetUsername(), upVoteRequest.getAuthorUsername());
@@ -101,15 +101,38 @@ public class UserController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
-    @PostMapping("/down-vote")
+    @PostMapping("/downvote")
     public ResponseEntity<String> downvoteRequest(@RequestBody UpDownVoteRequest downVoteRequest) {
         try {
             userService.downvoteUser(downVoteRequest.getTargetUsername(), downVoteRequest.getAuthorUsername());
-            return ResponseEntity.ok("Upvoted successfully");
+            return ResponseEntity.ok("Downvoted successfully");
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
+    @GetMapping("/hasUpvoted/{fromUser}/{toUser}")
+    public ResponseEntity<Boolean> hasUpvoted(@PathVariable String fromUser, @PathVariable String toUser) {
+        try {
+            boolean hasUpvoted = userService.hasUpvoted(fromUser, toUser);
+            return ResponseEntity.ok(hasUpvoted);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(false);
+        }
+    }
+
+    @GetMapping("/hasDownvoted/{fromUser}/{toUser}")
+    public ResponseEntity<Boolean> hasDownvoted(@PathVariable String fromUser, @PathVariable String toUser) {
+        try {
+            boolean hasDownvoted = userService.hasDownvoted(fromUser, toUser);
+            return ResponseEntity.ok(hasDownvoted);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(false);
+        }
+    }
+
+
+
     @PostMapping("/{id}/enable")
     public ResponseEntity<User> enableUser(@PathVariable Integer id) {
         User user = userService.enableUser(id);

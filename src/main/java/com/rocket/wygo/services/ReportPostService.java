@@ -54,7 +54,7 @@ public class ReportPostService {
 
             User reportAuthor = reportPost.getAuthor();
             UserResponse reportAuthorDTO = new UserResponse(
-                    reportAuthor.getId(), reportAuthor.getUsername() ,reportAuthor.getBirth(), reportAuthor.getHometown(),
+                    reportAuthor.getId(), reportAuthor.getUsername() , reportAuthor.getName() ,reportAuthor.getBirth(), reportAuthor.getHometown(),
                     reportAuthor.getAvatar(), reportAuthor.getGender(), reportAuthor.getBio(),
                     reportAuthor.getFavorList().size(), reportAuthor.getDisfavorList().size(),
                     reportAuthor.getBefavoredList().size(), reportAuthor.getBedisfavoredList().size(),
@@ -66,7 +66,7 @@ public class ReportPostService {
             Post reportObject = reportPost.getReportObject();
             User authorPost = reportObject.getAuthor();
             UserResponse postAuthorDTO = new UserResponse(
-                    authorPost.getId(), authorPost.getUsername() ,authorPost.getBirth(), authorPost.getHometown(),
+                    authorPost.getId(), authorPost.getUsername() , authorPost.getName(),authorPost.getBirth(), authorPost.getHometown(),
                     authorPost.getAvatar(), authorPost.getGender(), authorPost.getBio(),
                     authorPost.getFavorList().size(), authorPost.getDisfavorList().size(),
                     authorPost.getBefavoredList().size(), authorPost.getBedisfavoredList().size(),

@@ -18,9 +18,10 @@ public class UserResponse {
     private int favorListSize;
     private int disfavorListSize;
 
-    public UserResponse(Integer id, String username, Date birth, String hometown, String avatar, String gender, String bio, int favorListSize, int disfavorListSize, int befavoredListSize, int bedisfavoredListSize, int notificationListSize, Boolean available) {
+    public UserResponse(Integer id, String username, String name, Date birth, String hometown, String avatar, String gender, String bio, int favorListSize, int disfavorListSize, int befavoredListSize, int bedisfavoredListSize, int notificationListSize, Boolean available) {
         this.id = id;
         this.username = username;
+        this.name = name;
         this.birth = birth;
         this.hometown = hometown;
         this.avatar = avatar;
