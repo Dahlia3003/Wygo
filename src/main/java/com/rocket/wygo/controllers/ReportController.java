@@ -1,6 +1,8 @@
 package com.rocket.wygo.controllers;
 
 import com.rocket.wygo.exceptions.UserAlreadyExistsException;
+import com.rocket.wygo.requests.PostIdRequest;
+import com.rocket.wygo.requests.ReportPostIDRequest;
 import com.rocket.wygo.requests.ReportPostRequest;
 import com.rocket.wygo.requests.ReportUserRequest;
 import com.rocket.wygo.response.MessageResponse;
@@ -14,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.logging.Logger;
 
 @RestController
 @RequestMapping("/reports")
@@ -33,6 +36,30 @@ public class ReportController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
+    @PostMapping("/post/resolve")
+    public ResponseEntity<String> resolveReportPost(@RequestBody ReportPostIDRequest reportPostIDRequest) {
+        try {
+            Logger LOGGER = Logger.getLogger(ReportPostService.class.getName());
+            LOGGER.warning(reportPostIDRequest.getReportPostId()+"");
+            reportPostService.resolveReportPost(reportPostIDRequest.getReportPostId());
+            return ResponseEntity.ok().body("Thay doi trang thai giai quyet thành công!");
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+    @GetMapping("/post/{reportPostId}/get-post-id")
+    public ResponseEntity<Integer> getPostIdFromReportId(@PathVariable Long reportPostId) {
+        try {
+            Logger LOGGER = Logger.getLogger(ReportPostService.class.getName());
+            LOGGER.warning(reportPostId+"");
+            Integer postId = reportPostService.getPostIdFromReportId(reportPostId);
+            return ResponseEntity.ok(postId);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(null);
+        }
+    }
+
     @PostMapping("/post/all")
     public ResponseEntity<List<ReportPostResponse>> getAllReportPosts() {
         try {
