@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 @Service
 public class ReportPostService {
@@ -82,5 +83,22 @@ public class ReportPostService {
 
         return reportPostDTOs;
     }
-
+        @Transactional
+        public void resolveReportPost(Long postId) {
+            ReportPost reportPost = reportPostRepository.findById(postId).orElse(null);
+            Logger LOGGER = Logger.getLogger(ReportPostService.class.getName());
+            LOGGER.warning(reportPost.getId()+"");
+            if (reportPost == null)
+            {
+                throw new RuntimeException("Không tìm thấy bài viết!");
+            }
+            reportPost.setResolved(!reportPost.isResolved());
+            reportPostRepository.save(reportPost);
+        }
+        @Transactional
+        public Integer getPostIdFromReportId(Long reportPostId) {
+            ReportPost reportPost = reportPostRepository.findById(reportPostId)
+                    .orElseThrow(() -> new RuntimeException("Report post not found"));
+            return reportPost.getReportObject().getId();
+        }
 }
