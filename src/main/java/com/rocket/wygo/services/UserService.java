@@ -7,6 +7,7 @@ import com.rocket.wygo.exceptions.UserNotFoundException;
 import com.rocket.wygo.models.User;
 import com.rocket.wygo.repositories.UserRepository;
 import com.rocket.wygo.response.UserDTO;
+import com.rocket.wygo.response.UserResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -195,7 +196,7 @@ public class UserService {
         return userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("User not found"));
     }
     @Transactional
-    public User checkUserExisted(String username) {
+    public UserResponse checkUserExisted(String username) {
         User user = new User();
         if (username.contains("@"))
         {
@@ -209,7 +210,27 @@ public class UserService {
         {
             throw new LoginFailedException("Không tìm thấy người dùng!");
         }
-        return user;
+
+        return convertToUserRes(user);
+    }
+    public UserResponse convertToUserRes(User user)
+    {
+        UserResponse userResponse = new UserResponse();
+        userResponse.setId(user.getId());
+        userResponse.setUsername(user.getUsername());
+        userResponse.setName(user.getName());
+        userResponse.setBirth(user.getBirth());
+        userResponse.setHometown(user.getHometown());
+        userResponse.setAvatar(user.getAvatar());
+        userResponse.setGender(user.getGender());
+        userResponse.setBio(user.getBio());
+        userResponse.setAvailable(user.getAvailable());
+        userResponse.setFavorListSize(user.getFavorList().size());
+        userResponse.setDisfavorListSize(user.getDisfavorList().size());
+        userResponse.setBefavoredListSize(user.getBefavoredList().size());
+        userResponse.setBedisfavoredListSize(user.getBedisfavoredList().size());
+        userResponse.setNotificationListSize(user.getNotificationList().size());
+        return userResponse;
     }
 
     @Transactional
