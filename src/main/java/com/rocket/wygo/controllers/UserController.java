@@ -18,9 +18,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.Map;
 
+@CrossOrigin(origins = "https://wygo-react-frontend.vercel.app")
 @RestController
 @RequestMapping ("/users")
-//@CrossOrigin
 public class UserController {
     @Autowired
     private UserService userService;
