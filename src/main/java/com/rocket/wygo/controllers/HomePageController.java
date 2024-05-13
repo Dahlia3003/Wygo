@@ -15,7 +15,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/homepage")
-@CrossOrigin
 public class HomePageController {
     @Autowired
     HomePageService homePageService;

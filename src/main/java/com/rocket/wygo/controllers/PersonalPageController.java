@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/profile")
-@CrossOrigin
 public class PersonalPageController {
     @Autowired
     ViewPersonalPageService viewPersonalPageService;

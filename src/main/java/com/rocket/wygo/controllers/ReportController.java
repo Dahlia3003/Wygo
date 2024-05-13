@@ -20,7 +20,6 @@ import java.util.logging.Logger;
 
 @RestController
 @RequestMapping("/reports")
-@CrossOrigin
 public class ReportController {
     @Autowired
     private ReportPostService reportPostService;
