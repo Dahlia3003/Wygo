@@ -41,12 +41,13 @@ public class UserController {
             User user = userService.viewUserProfile(username);
             Map<String, Object> userProfile = new HashMap<>();
 
-            userProfile.put("user", user);
-            userProfile.put("favorListSize", user.getFavorList().size());
-            userProfile.put("disfavorListSize", user.getDisfavorList().size());
-            userProfile.put("befavoredListSize", user.getBefavoredList().size());
-            userProfile.put("bedisfavoredListSize", user.getBedisfavoredList().size());
-            userProfile.put("notificationListSize", user.getNotificationList().size());
+            userProfile.put("user", userService.convertToUserRes(user));
+            userProfile.put("email", user.getEmail());
+//            userProfile.put("favorListSize", user.getFavorList().size());
+//            userProfile.put("disfavorListSize", user.getDisfavorList().size());
+//            userProfile.put("befavoredListSize", user.getBefavoredList().size());
+//            userProfile.put("bedisfavoredListSize", user.getBedisfavoredList().size());
+//            userProfile.put("notificationListSize", user.getNotificationList().size());
 
             return ResponseEntity.ok(userProfile);
         } catch (UserNotFoundException e) {
