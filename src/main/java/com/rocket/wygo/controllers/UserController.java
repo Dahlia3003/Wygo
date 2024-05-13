@@ -9,6 +9,7 @@ import com.rocket.wygo.requests.LoginRequest;
 import com.rocket.wygo.requests.RegistrationRequest;
 import com.rocket.wygo.requests.UpDownVoteRequest;
 import com.rocket.wygo.requests.UpdateInfoRequest;
+import com.rocket.wygo.response.UserResponse;
 import com.rocket.wygo.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -63,9 +64,9 @@ public class UserController {
         }
     }
     @GetMapping("/user/{user}")
-    public ResponseEntity<User> getUserByEmailOrUsername(@PathVariable String user) {
+    public ResponseEntity<UserResponse> getUserByEmailOrUsername(@PathVariable String user) {
         try {
-            User userRes = userService.checkUserExisted(user);
+            UserResponse userRes = userService.checkUserExisted(user);
             return ResponseEntity.ok(userRes);
         } catch (UserNotFoundException e) {
             return ResponseEntity.badRequest().body(null);

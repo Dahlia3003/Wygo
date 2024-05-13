@@ -11,6 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -44,28 +47,43 @@ public class HomePageService {
     }
 
     @Transactional
-    public List<PostResponse> getRecommendPost(String username){
+    public List<PostResponse> getRecommendPost(String username, String time){
+        LocalDateTime timeLimit = LocalDateTime.parse(time, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"));
+        timeLimit = timeLimit.plusDays(1);
         User user = userRepository.findByUsername(username);
 
         List<PostResponse> post = new ArrayList<>();
         List<User> favorList = user.getFavorList();
 
+        int maxPost = 3;
+        if (favorList.size()>5){
+            maxPost = 2;
+        }
+        if (favorList.size()>9){
+            maxPost = 1;
+        }
+
         for (User favorUser: favorList){
-            List<Post> userPost = postRepository.findByAuthor_Username(username);
+            List<Post> userPost = postRepository.findByAuthor_Username(favorUser.getUsername());
             Collections.sort(userPost, new Comparator<Post>() {
                 @Override
                 public int compare(Post post1, Post post2) {
                     return post2.getPostTime().compareTo(post1.getPostTime());
                 }
             });
-            for (int i = 0; i<3; i++){
-                if (userPost.size()>i){
-                    post.add(convertToPostResponse(userPost.get(i)));
+            int numPost = 0;
+            for (Post postUser : userPost){
+                if (numPost>maxPost){
+                    break;
+                }
+                if (postUser.getPostTime().isBefore(timeLimit)){
+                    post.add(convertToPostResponse(postUser));
+                    numPost++;
                 }
             }
         }
-
-        return post;
+        int numGet = Math.min(post.size(), 10);
+        return post.subList(0,numGet);
     }
     public PostResponse convertToPostResponse(Post post){
         PostResponse postResponse = new PostResponse();
