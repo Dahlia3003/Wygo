@@ -1,5 +1,6 @@
 package com.rocket.wygo.controllers;
 
+import com.rocket.wygo.response.CustomSearchResponse;
 import com.rocket.wygo.response.SearchResultsRespond;
 import com.rocket.wygo.services.SearchService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +16,7 @@ public class SearchController {
 
     @GetMapping("/search")
     public ResponseEntity<?> search(@RequestParam String query) {
-        SearchResultsRespond results = searchService.search(query);
+        CustomSearchResponse results = searchService.search(query);
         return ResponseEntity.ok(results);
     }
 }
