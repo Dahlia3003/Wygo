@@ -20,7 +20,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping ("/users")
-@CrossOrigin
+//@CrossOrigin
 public class UserController {
     @Autowired
     private UserService userService;
