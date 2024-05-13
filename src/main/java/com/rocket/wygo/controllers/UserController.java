@@ -23,7 +23,7 @@ import java.util.Map;
 public class UserController {
     @Autowired
     private UserService userService;
-
+    @CrossOrigin(origins = "https://wygo-react-frontend.vercel.app")
     @PostMapping("/register")
     public ResponseEntity<String> register(@RequestBody RegistrationRequest registrationRequest) {
         try {
@@ -72,6 +72,7 @@ public class UserController {
         }
     }
 
+    @CrossOrigin(origins = "https://wygo-react-frontend.vercel.app")
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest)
     {
