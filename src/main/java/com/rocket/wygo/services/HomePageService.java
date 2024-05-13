@@ -49,7 +49,6 @@ public class HomePageService {
     @Transactional
     public List<PostResponse> getRecommendPost(String username, String time){
         LocalDateTime timeLimit = LocalDateTime.parse(time, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"));
-        timeLimit = timeLimit.plusDays(1);
         User user = userRepository.findByUsername(username);
 
         List<PostResponse> post = new ArrayList<>();
@@ -73,12 +72,12 @@ public class HomePageService {
             });
             int numPost = 0;
             for (Post postUser : userPost){
-                if (numPost>maxPost){
-                    break;
-                }
-                if (postUser.getPostTime().isBefore(timeLimit)){
+                if (postUser.getPostTime().isBefore(timeLimit) && postUser.getAvailable()){
                     post.add(convertToPostResponse(postUser));
                     numPost++;
+                }
+                if (numPost>=maxPost){
+                    break;
                 }
             }
         }
