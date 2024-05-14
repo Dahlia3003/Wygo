@@ -119,28 +119,35 @@ public class UserService {
     }
 
     @Transactional
-    public void upvoteUser(String target, String author) throws Exception {
-        User targetUser = userRepository.findByUsername(target);
-        User authorUser = userRepository.findByUsername(author);
+    public void upvoteUser(String targetUsername, String authorUsername) throws Exception {
+        User targetUser = userRepository.findByUsername(targetUsername);
+        User authorUser = userRepository.findByUsername(authorUsername);
 
         if (targetUser == null) {
-            throw new Exception("Người dùng " + target + " không tồn tại");
+            throw new Exception("Người dùng " + targetUsername + " không tồn tại");
         }
         if (authorUser == null) {
-            throw new Exception("Người dùng " + author + " không tồn tại");
+            throw new Exception("Người dùng " + authorUsername + " không tồn tại");
         }
 
-        if (targetUser.getBefavoredList().contains(authorUser)) {
+        // Kiểm tra xem đã upvote trước đó hay chưa
+        boolean hasUpvoted = targetUser.getBefavoredList().contains(authorUser);
+
+        if (hasUpvoted) {
+            // Nếu đã upvote trước đó, hãy xóa upvote
             targetUser.getBefavoredList().remove(authorUser);
             authorUser.getFavorList().remove(targetUser);
-        }
-        else {
+        } else {
+            // Nếu chưa upvote, hãy thêm upvote
             targetUser.getBefavoredList().add(authorUser);
             authorUser.getFavorList().add(targetUser);
         }
+
+        // Lưu thay đổi vào cơ sở dữ liệu
         userRepository.save(targetUser);
         userRepository.save(authorUser);
     }
+
 
     @Transactional
     public void downvoteUser(String target, String author) throws Exception {
@@ -153,11 +160,15 @@ public class UserService {
             throw new Exception("Người dùng " + author + " không tồn tại");
         }
 
-        if (targetUser.getBedisfavoredList().contains(authorUser)) {
+        // Kiểm tra xem đã downvote trước đó hay chưa
+        boolean hasDownvoted = targetUser.getBedisfavoredList().contains(authorUser);
+
+        if (hasDownvoted) {
+            // Nếu đã downvote trước đó, hãy xóa downvote
             targetUser.getBedisfavoredList().remove(authorUser);
             authorUser.getDisfavorList().remove(targetUser);
-        }
-        else {
+        } else {
+            // Nếu chưa downvote, hãy thêm downvote
             targetUser.getBedisfavoredList().add(authorUser);
             authorUser.getDisfavorList().add(targetUser);
         }
@@ -166,13 +177,16 @@ public class UserService {
     }
 
     @Transactional
-    public boolean hasUpvoted(String fromUser, String toUser) {
-        User fromUserEntity = userRepository.findByUsername(fromUser);
-        User toUserEntity = userRepository.findByUsername(toUser);
-        if (fromUserEntity == null || toUserEntity == null) {
-            throw new RuntimeException("User not found");
+    public boolean hasUpvoted(String fromUsername, String toUsername) {
+        User fromUser = userRepository.findByUsername(fromUsername);
+        User toUser = userRepository.findByUsername(toUsername);
+
+        if (fromUser == null || toUser == null) {
+            return false;
         }
-        return toUserEntity.getBefavoredList().contains(fromUserEntity);
+
+        // Kiểm tra xem đã upvote hay chưa
+        return toUser.getBefavoredList().contains(fromUser);
     }
 
     @Transactional
