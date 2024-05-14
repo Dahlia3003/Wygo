@@ -51,6 +51,9 @@ public class UserService {
 
     @Transactional
     public void login(String username, String password) throws LoginFailedException {
+        if (username.isBlank() || password.isBlank()){
+            throw new LoginFailedException("Không được để trống trường thông tin!");
+        }
         if (username.contains("@"))
         {
             User loginUser = userRepository.findByEmail(username);
@@ -78,6 +81,9 @@ public class UserService {
     public void updateUserInfo(String username, String changeType, String newInfo) throws UpdateInfoException
     {
         try {
+            if (newInfo.trim().isBlank()){
+                throw new UpdateInfoException("Không được để trống trường thông tin!");
+            }
             switch (changeType) {
                 case "avatar":
                     userUpdaterService.changeAvatar(username, newInfo);

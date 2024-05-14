@@ -63,7 +63,6 @@ public class ReportPostService {
 
             reportPostDTO.setAuthor(reportAuthorDTO);
 
-
             Post reportObject = reportPost.getReportObject();
             User authorPost = reportObject.getAuthor();
             UserResponse postAuthorDTO = new UserResponse(
@@ -77,28 +76,29 @@ public class ReportPostService {
                     reportObject.getCommentList().size(), reportObject.getReactions().size(),
                     reportObject.getAvailable());
             reportPostDTO.setReportObject(postDTO);
-
+            reportPostDTO.setReportTime(reportPost.getTimestamp());
+            reportPostDTO.setResolved(reportPost.isResolved());
             reportPostDTOs.add(reportPostDTO);
         }
 
         return reportPostDTOs;
     }
-        @Transactional
-        public void resolveReportPost(Long postId) {
-            ReportPost reportPost = reportPostRepository.findById(postId).orElse(null);
-            Logger LOGGER = Logger.getLogger(ReportPostService.class.getName());
-            LOGGER.warning(reportPost.getId()+"");
-            if (reportPost == null)
-            {
-                throw new RuntimeException("Không tìm thấy bài viết!");
-            }
-            reportPost.setResolved(!reportPost.isResolved());
-            reportPostRepository.save(reportPost);
+    @Transactional
+    public void resolveReportPost(Long postId) {
+        ReportPost reportPost = reportPostRepository.findById(postId).orElse(null);
+        Logger LOGGER = Logger.getLogger(ReportPostService.class.getName());
+        LOGGER.warning(reportPost.getId()+"");
+        if (reportPost == null)
+        {
+            throw new RuntimeException("Không tìm thấy bài viết!");
         }
-        @Transactional
-        public Integer getPostIdFromReportId(Long reportPostId) {
-            ReportPost reportPost = reportPostRepository.findById(reportPostId)
-                    .orElseThrow(() -> new RuntimeException("Report post not found"));
-            return reportPost.getReportObject().getId();
-        }
+        reportPost.setResolved(!reportPost.isResolved());
+        reportPostRepository.save(reportPost);
+    }
+    @Transactional
+    public Integer getPostIdFromReportId(Long reportPostId) {
+        ReportPost reportPost = reportPostRepository.findById(reportPostId)
+                .orElseThrow(() -> new RuntimeException("Report post not found"));
+        return reportPost.getReportObject().getId();
+    }
 }

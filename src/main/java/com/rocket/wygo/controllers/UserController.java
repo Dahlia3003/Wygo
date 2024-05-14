@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Logger;
 
 @RestController
 @RequestMapping ("/users")
@@ -133,13 +134,20 @@ public class UserController {
     @PostMapping("/status")
     public ResponseEntity<String> changeUserStatus(@RequestBody String username)
     {
+        Logger LOGGER = Logger.getLogger(UserController.class.getName());
+
+        // Bỏ ký tự đầu và ký tự cuối
+        String trimmedUsername = username.substring(1, username.length() - 1);
+        LOGGER.warning(trimmedUsername);
+
         try {
-            userService.changeUserStatus(username);
+            userService.changeUserStatus(trimmedUsername);
             return ResponseEntity.ok().body("Thay đổi trạng thái thành công!");
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
 
 
 
