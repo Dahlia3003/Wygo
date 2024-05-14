@@ -47,12 +47,13 @@ public class ReportController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
     @GetMapping("/post/{reportPostId}/get-post-id")
     public ResponseEntity<Integer> getPostIdFromReportId(@PathVariable Long reportPostId) {
         try {
             Logger LOGGER = Logger.getLogger(ReportPostService.class.getName());
             LOGGER.warning(reportPostId+"");
-            Integer postId = reportPostService.getPostIdFromReportId(reportPostId);
+                Integer postId = reportPostService.getPostIdFromReportId(reportPostId);
             return ResponseEntity.ok(postId);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(null);

@@ -143,6 +143,7 @@ public class User extends Account {
         this.setName(name);
         this.setEmail(email);
         this.setRegisterDate(new Date());
+        this.available=true;
     }
 
 }

@@ -4,6 +4,7 @@ import com.rocket.wygo.exceptions.LoginFailedException;
 import com.rocket.wygo.exceptions.UpdateInfoException;
 import com.rocket.wygo.exceptions.UserAlreadyExistsException;
 import com.rocket.wygo.exceptions.UserNotFoundException;
+import com.rocket.wygo.models.Post;
 import com.rocket.wygo.models.User;
 import com.rocket.wygo.repositories.UserRepository;
 import com.rocket.wygo.response.UserDTO;
@@ -178,19 +179,7 @@ public class UserService {
         return toUserEntity.getBedisfavoredList().contains(fromUserEntity);
     }
 
-    @Transactional
-    public User enableUser(Integer id) {
-        User user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
-        user.setAvailable(true);
-        return userRepository.save(user);
-    }
 
-    @Transactional
-    public User disableUser(Integer id) {
-        User user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
-        user.setAvailable(false);
-        return userRepository.save(user);
-    }
     @Transactional
     public User getUserById(Integer id) {
         return userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("User not found"));
@@ -246,6 +235,18 @@ public class UserService {
         user.setGender(userDTO.getGender());
         user.setBio(userDTO.getBio());
 
+        userRepository.save(user);
+    }
+
+    @Transactional
+    public void changeUserStatus(String username)
+    {
+        User user = userRepository.findByUsername(username);
+        if (user == null)
+        {
+            throw new RuntimeException("Không tìm thấy người dùng!");
+        }
+        user.setAvailable(!user.getAvailable());
         userRepository.save(user);
     }
 }

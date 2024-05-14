@@ -5,10 +5,7 @@ import com.rocket.wygo.exceptions.UpdateInfoException;
 import com.rocket.wygo.exceptions.UserAlreadyExistsException;
 import com.rocket.wygo.exceptions.UserNotFoundException;
 import com.rocket.wygo.models.User;
-import com.rocket.wygo.requests.LoginRequest;
-import com.rocket.wygo.requests.RegistrationRequest;
-import com.rocket.wygo.requests.UpDownVoteRequest;
-import com.rocket.wygo.requests.UpdateInfoRequest;
+import com.rocket.wygo.requests.*;
 import com.rocket.wygo.response.UserResponse;
 import com.rocket.wygo.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -133,17 +130,28 @@ public class UserController {
         }
     }
 
-
-
-    @PostMapping("/{id}/enable")
-    public ResponseEntity<User> enableUser(@PathVariable Integer id) {
-        User user = userService.enableUser(id);
-        return ResponseEntity.ok(user);
+    @PostMapping("/status")
+    public ResponseEntity<String> changeUserStatus(@RequestBody String username)
+    {
+        try {
+            userService.changeUserStatus(username);
+            return ResponseEntity.ok().body("Thay đổi trạng thái thành công!");
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
-    @PostMapping("/{id}/disable")
-    public ResponseEntity<User> disableUser(@PathVariable Integer id) {
-        User user = userService.disableUser(id);
-        return ResponseEntity.ok(user);
-    }
+
+
+//    @PostMapping("/{id}/enable")
+//    public ResponseEntity<User> enableUser(@PathVariable Integer id) {
+//        User user = userService.enableUser(id);
+//        return ResponseEntity.ok(user);
+//    }
+//
+//    @PostMapping("/{id}/disable")
+//    public ResponseEntity<User> disableUser(@PathVariable Integer id) {
+//        User user = userService.disableUser(id);
+//        return ResponseEntity.ok(user);
+//    }
 }
